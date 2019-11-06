@@ -7,10 +7,14 @@ class Search extends React.Component {
   }
   render() {
     return (<div className="search-bar form-inline">
-      <input className="form-control" type="text" value={this.state.inputValue} onChange={e => this.setState({'inputValue': e.target.value})}/>
+      <input className="form-control" type="text" value={this.state.inputValue} onChange={e => {
+        e.preventDefault();
+        this.setState({'inputValue': e.target.value});
+        return setTimeout(() => this.props.search(this.state.inputValue), 1500);
+      }}/>
       <button className="btn hidden-sm-down" onClick={e => {
         e.preventDefault();
-        return props.search({q: this.state.inputValue});
+        return this.props.search(this.state.inputValue);
       }}>
         <span className="glyphicon glyphicon-search"></span>
       </button>

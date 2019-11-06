@@ -12,10 +12,19 @@ class App extends React.Component {
       allVids: exampleVideoData
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
-    this.props.searchYouTube({query: 'react js', key: YOUTUBE_API_KEY}, (data) => {
+    this.handleSearch();
+  }
+
+  handleClick(video) {
+    this.setState({ currentVid: video });
+  }
+
+  handleSearch(q = 'cats') {
+    return this.props.searchYouTube({query: q, key: YOUTUBE_API_KEY}, (data) => {
       return this.setState({
         currentVid: data[0],
         allVids: data
@@ -23,16 +32,12 @@ class App extends React.Component {
     });
   }
 
-  handleClick(video) {
-    this.setState({ currentVid: video });
-  }
-
   render() {
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em></h5><Search search={this.props.searchYouTube} /></div>
+            <div><h5><em>search</em></h5><Search search={this.handleSearch} /></div>
           </div>
         </nav>
         <div className="row">
