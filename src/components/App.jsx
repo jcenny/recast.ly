@@ -2,6 +2,7 @@ import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
 import Search from './Search.js';
 import exampleVideoData from './../data/exampleVideoData.js';
+import YOUTUBE_API_KEY from './../config/youtube.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +14,15 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+    this.props.searchYouTube({query: 'react js', key: YOUTUBE_API_KEY}, (data) => {
+      return this.setState({
+        currentVid: data[0],
+        allVids: data
+      });
+    });
+  }
+
   handleClick(video) {
     this.setState({ currentVid: video });
   }
@@ -22,15 +32,15 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em><Search /></h5></div>
+            <div><h5><em>search</em></h5><Search search={this.props.searchYouTube} /></div>
           </div>
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <div><h5><em>Video Player</em><VideoPlayer video={this.state.currentVid}/></h5></div>
+            <div><h5><em>Video Player</em></h5><VideoPlayer video={this.state.currentVid}/></div>
           </div>
           <div className="col-md-5">
-            <div><h5><em>Video List</em><VideoList click={this.handleClick} videos={this.state.allVids}/></h5></div>
+            <div><h5><em>Video List</em></h5><VideoList click={this.handleClick} videos={this.state.allVids}/></div>
           </div>
         </div>
       </div>
